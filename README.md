@@ -26,6 +26,25 @@ import Stacksift
     Stacksift.start(APIKey: "my key")
 ```
 
+## Exceptions from AppKit apps
+
+Unfortunately, AppKit intefers with the flow of runtime exceptions. If you want to capture information about uncaught exceptions, some extra work is required.
+
+The top-level `NSApplication` instance for your app must be a subclass of `ImpactMonitoredApplication`.
+
+```swift
+import Impact
+
+class Application: ImpactMonitoredApplication {
+}
+```
+
+and, you must update your Info.plist to ensure that the `NSPrincipalClass` key references this class with `<App Module Name>.Application`.
+
+I realize this is a huge pain. If you feel so motivated, please file feedback with Apple to ask them to make AppKit behave like UIKit in this respect.
+
+I would also stronly recommend setting the `NSApplicationCrashOnExceptions` defaults key to true. The default setting will allow your application to continue executing post-exception, virtually guaranteeing state corruption and incorrect behavior.
+
 ## Suggestions or Feedback
 
 We'd love to hear from you! Get in touch via [twitter](https://twitter.com/stacksift), an issue, or a pull request.
