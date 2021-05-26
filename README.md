@@ -10,7 +10,7 @@ Swift Package Manager:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/stacaksift/SDK.git")
+    .package(url: "https://github.com/stacksift/SDK.git")
 ]
 ```
 
