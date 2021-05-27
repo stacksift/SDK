@@ -4,17 +4,23 @@ import Wells
 import os.log
 
 public class Stacksift {
+    public enum Monitor {
+        case inProcessOnly
+        case metricKitOnly
+        case metricKitWithInProcessFallback
+    }
+
     public static var shared = Stacksift()
 
     private var APIKey: String?
     private var endpoint: URL?
     private var useBackgroundUploads: Bool = true
+    private var monitorType = Monitor.inProcessOnly
 
     private let logger: OSLog
 
     init() {
         self.logger = OSLog(subsystem: "io.stacksift", category: "Reporter")
-
     }
 
     private lazy var reporter: WellsReporter = {
@@ -24,9 +30,13 @@ public class Stacksift {
 
         let reporter = WellsReporter(baseURL: reportingURL, backgroundIdentifier: backgroundIdentifier)
 
-        reporter.locationProvider = IdentifierExtensionLocationProvider(baseURL: reportingURL, fileExtension: "log")
+        reporter.locationProvider = FilenameIdentifierLocationProvider(baseURL: reportingURL)
 
         return reporter
+    }()
+
+    private lazy var metricKitSubscriber: MetricKitSubscriber = {
+        return MetricKitSubscriber()
     }()
 
     private var reportDirectoryURL: URL {
@@ -42,13 +52,16 @@ public class Stacksift {
         return reporter.usingBackgroundUploads
     }
 
-    public static func start(APIKey: String, useBackgroundUploads: Bool = true) {
-        shared.start(APIKey: APIKey, useBackgroundUploads: useBackgroundUploads)
+    public static func start(APIKey: String, useBackgroundUploads: Bool = true, monitor: Monitor = .inProcessOnly) {
+        shared.start(APIKey: APIKey,
+                     useBackgroundUploads: useBackgroundUploads,
+                     monitor: monitor)
     }
 
-    public func start(APIKey: String, useBackgroundUploads: Bool = true) {
+    public func start(APIKey: String, useBackgroundUploads: Bool = true, monitor: Monitor = .inProcessOnly) {
         self.APIKey = APIKey
         self.useBackgroundUploads = useBackgroundUploads
+        self.monitorType = monitor
 
         if useBackgroundUploads == false {
             os_log("using non-background sessions for uploading reports", log: self.logger, type: .info)
@@ -56,15 +69,46 @@ public class Stacksift {
         
         let existingURLs = existingLogURLs()
 
-        let id = UUID()
-        let idString = id.uuidString.replacingOccurrences(of: "-", with: "").lowercased()
+        if impactEnabled {
+            os_log("using in-process monitoring", log: self.logger, type: .info)
 
-        let logURL = reportDirectoryURL.appendingPathComponent(idString, isDirectory: false).appendingPathExtension("log")
+            let id = UUID()
+            let idString = id.lowerAlphaOnly
 
-        ImpactMonitor.shared.organizationIdentifier = APIKey
-        ImpactMonitor.shared.start(with: logURL, identifier: id)
+            let logURL = reportDirectoryURL.appendingPathComponent(idString, isDirectory: false).appendingPathExtension("log")
+
+            ImpactMonitor.shared.organizationIdentifier = APIKey
+            ImpactMonitor.shared.start(with: logURL, identifier: id)
+        }
+
+        if metricKitEnabled {
+            os_log("using MetricKit monitoring", log: self.logger, type: .info)
+
+            metricKitSubscriber.onReceive = { [unowned self] (reps) in
+                self.handleMetricKitPayloadData(reps)
+            }
+        }
 
         submitExistingLogs(with: existingURLs)
+    }
+
+    private func handleMetricKitPayloadData(_ reps: [Data]) {
+        let urls = reps.compactMap { rep -> URL? in
+            let idString = UUID().lowerAlphaOnly
+
+            let logURL = reportDirectoryURL.appendingPathComponent(idString, isDirectory: false).appendingPathExtension("mxdiagnostic")
+
+            do {
+                try rep.write(to: logURL)
+            } catch {
+                os_log("failed to save diagnostic payload data", log: self.logger, type: .error)
+                return nil
+            }
+
+            return logURL
+        }
+
+        submitExistingLogs(with: urls)
     }
 
     private func deleteAllLogs(with urls: [URL]) {
@@ -87,55 +131,62 @@ public class Stacksift {
         return []
     }
 
-    private func makeURLRequest(identifier: String) throws -> URLRequest {
+    private func makeURLRequest(identifier: UploadIdentifier) throws -> URLRequest {
         let platform = ImpactMonitor.platform as String
-        guard let orgIdentifier = APIKey else {
+        guard let APIKey = APIKey else {
             throw NSError(domain: "StacksiftError", code: 1)
         }
         guard let url = URL(string: "https://reports.stacksift.io/v1/reports") else {
             throw NSError(domain: "StacksiftError", code: 2)
         }
 
+        let reportID = identifier.reportID
+        let mimeType = identifier.mimeType
+
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10.0)
 
         request.httpMethod = "PUT"
 
-        request.addValue(identifier, forHTTPHeaderField: "stacksift-report-id")
+        request.addValue(reportID, forHTTPHeaderField: "stacksift-report-id")
         request.addValue(platform, forHTTPHeaderField: "stacksift-platform")
-        request.addValue("application/vnd.stacksift-impact", forHTTPHeaderField: "Content-Type")
-        request.addValue(orgIdentifier, forHTTPHeaderField: "stacksift-api-key")
+        request.addValue(mimeType, forHTTPHeaderField: "Content-Type")
+        request.addValue(APIKey, forHTTPHeaderField: "stacksift-api-key")
 
         return request
+    }
+
+    private func submitReport(at url: URL) {
+        let identifier = UploadIdentifier(url: url)
+
+        os_log("submitting report: %{public}@", log: self.logger, type: .info, url.path)
+
+        do {
+            let request = try makeURLRequest(identifier: identifier)
+            try reporter.submit(fileURL: url, identifier: identifier.value, uploadRequest: request)
+        } catch {
+            os_log("failed to submit report", log: self.logger, type: .fault)
+            removeLog(at: url)
+        }
     }
 
     private func submitExistingLogs(with URLs: [URL]) {
         for url in URLs {
             if !shouldSubmitLog(at: url) {
-                os_log("uninteresting log: %{public}@", log: self.logger, type: .info, url.path)
+                os_log("uninteresting report: %{public}@", log: self.logger, type: .info, url.path)
 
                 removeLog(at: url)
                 continue
             }
 
-            let reportId = reportIdentifier(from: url)
-
-            os_log("submitting log: %{public}@", log: self.logger, type: .info, url.path)
-
-            do {
-                let request = try makeURLRequest(identifier: reportId)
-                try reporter.submit(fileURL: url, identifier: reportId, uploadRequest: request)
-            } catch {
-                os_log("failed to submit log", log: self.logger, type: .fault)
-                removeLog(at: url)
-            }
+            submitReport(at: url)
         }
     }
 
-    private func reportIdentifier(from url: URL) -> String {
-        return url.deletingPathExtension().lastPathComponent
-    }
-
     private func shouldSubmitLog(at url: URL) -> Bool {
+        if url.pathExtension == "mxdiagnostic" {
+            return true
+        }
+
         guard let contents = try? String(contentsOf: url) else {
             return false
         }
@@ -165,6 +216,27 @@ public class Stacksift {
         } catch {
             os_log("failed to remove log at %{public}@ %{public}@", log: self.logger, type: .error, url.path, error.localizedDescription)
         }
+    }
+}
+
+extension Stacksift {
+    private var impactEnabled: Bool {
+        switch monitorType {
+        case .inProcessOnly:
+            return true
+        case .metricKitWithInProcessFallback:
+            return metricKitAvailable == false
+        case .metricKitOnly:
+            return false
+        }
+    }
+
+    private var metricKitAvailable: Bool {
+        return MetricKitSubscriber.metricKitAvailable
+    }
+    
+    private var metricKitEnabled: Bool {
+        return metricKitAvailable && impactEnabled == false
     }
 }
 

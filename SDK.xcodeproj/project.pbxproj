@@ -3,19 +3,46 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		C9A522E6265FF7660054C454 /* Stacksift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A522E4265FF75E0054C454 /* Stacksift.swift */; };
 		C9A522E7265FF7680054C454 /* FileManager+Directories.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A522E5265FF75E0054C454 /* FileManager+Directories.swift */; };
+		C9A522EC266023310054C454 /* Impact.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EA266023310054C454 /* Impact.xcframework */; };
+		C9A522ED266023310054C454 /* Impact.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EA266023310054C454 /* Impact.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C9A522EE266023310054C454 /* Wells.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EB266023310054C454 /* Wells.xcframework */; };
+		C9A522EF266023310054C454 /* Wells.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EB266023310054C454 /* Wells.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C9A522F2266031FF0054C454 /* MetricKitSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A522F1266031FF0054C454 /* MetricKitSubscriber.swift */; };
+		C9A522F42660354D0054C454 /* UUID+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A522F32660354D0054C454 /* UUID+Utilities.swift */; };
+		C9A522F62660FB3E0054C454 /* UploadIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A522F52660FB3E0054C454 /* UploadIdentifier.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C9A522F0266023310054C454 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C9A522ED266023310054C454 /* Impact.xcframework in Embed Frameworks */,
+				C9A522EF266023310054C454 /* Wells.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C9A522D7265FF6240054C454 /* Stacksift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Stacksift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9A522E2265FF67C0054C454 /* SDK.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = SDK.xcconfig; sourceTree = "<group>"; };
 		C9A522E4265FF75E0054C454 /* Stacksift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stacksift.swift; sourceTree = "<group>"; };
 		C9A522E5265FF75E0054C454 /* FileManager+Directories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Directories.swift"; sourceTree = "<group>"; };
+		C9A522EA266023310054C454 /* Impact.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Impact.xcframework; path = Carthage/Build/Impact.xcframework; sourceTree = "<group>"; };
+		C9A522EB266023310054C454 /* Wells.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Wells.xcframework; path = Carthage/Build/Wells.xcframework; sourceTree = "<group>"; };
+		C9A522F1266031FF0054C454 /* MetricKitSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricKitSubscriber.swift; sourceTree = "<group>"; };
+		C9A522F32660354D0054C454 /* UUID+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UUID+Utilities.swift"; sourceTree = "<group>"; };
+		C9A522F52660FB3E0054C454 /* UploadIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadIdentifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -23,6 +50,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9A522EC266023310054C454 /* Impact.xcframework in Frameworks */,
+				C9A522EE266023310054C454 /* Wells.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -35,6 +64,7 @@
 				C9A522E3265FF75E0054C454 /* Stacksift */,
 				C9A522E2265FF67C0054C454 /* SDK.xcconfig */,
 				C9A522D8265FF6240054C454 /* Products */,
+				C9A522E9266023310054C454 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -51,9 +81,21 @@
 			children = (
 				C9A522E4265FF75E0054C454 /* Stacksift.swift */,
 				C9A522E5265FF75E0054C454 /* FileManager+Directories.swift */,
+				C9A522F1266031FF0054C454 /* MetricKitSubscriber.swift */,
+				C9A522F32660354D0054C454 /* UUID+Utilities.swift */,
+				C9A522F52660FB3E0054C454 /* UploadIdentifier.swift */,
 			);
 			name = Stacksift;
 			path = Sources/Stacksift;
+			sourceTree = "<group>";
+		};
+		C9A522E9266023310054C454 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C9A522EA266023310054C454 /* Impact.xcframework */,
+				C9A522EB266023310054C454 /* Wells.xcframework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,6 +119,7 @@
 				C9A522D3265FF6240054C454 /* Sources */,
 				C9A522D4265FF6240054C454 /* Frameworks */,
 				C9A522D5265FF6240054C454 /* Resources */,
+				C9A522F0266023310054C454 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -133,7 +176,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9A522F2266031FF0054C454 /* MetricKitSubscriber.swift in Sources */,
 				C9A522E6265FF7660054C454 /* Stacksift.swift in Sources */,
+				C9A522F42660354D0054C454 /* UUID+Utilities.swift in Sources */,
+				C9A522F62660FB3E0054C454 /* UploadIdentifier.swift in Sources */,
 				C9A522E7265FF7680054C454 /* FileManager+Directories.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

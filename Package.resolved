@@ -14,9 +14,9 @@
         "package": "Wells",
         "repositoryURL": "https://github.com/stacksift/Wells",
         "state": {
-          "branch": null,
-          "revision": "d7aad19f68703692624bcbcee40fd625cc9ff5e9",
-          "version": "0.1.1"
+          "branch": "main",
+          "revision": "24cf9e53b3e92dbfab4e3b45fe5b74506dcff27d",
+          "version": null
         }
       }
     ]
