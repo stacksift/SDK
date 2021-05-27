@@ -23,8 +23,10 @@ import Stacksift
 
 ...
 
-    Stacksift.start(APIKey: "my key")
+Stacksift.start(APIKey: "my key")
 ```
+
+By default, Stacksift using `URLSession` background uploads for both reliability and performance. However, sometimes these can take **hours** for the OS to actually schedule. This can be a pain if you are just testing things out. To make that easier, you can disable background uploads with another parameter to the `start` method.
 
 ## Exceptions from AppKit apps
 
