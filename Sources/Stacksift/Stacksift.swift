@@ -8,30 +8,52 @@ public class Stacksift {
 
     private var APIKey: String?
     private var endpoint: URL?
+    private var useBackgroundUploads: Bool = true
 
-    private let reporter: WellsReporter
     private let logger: OSLog
 
     init() {
         self.logger = OSLog(subsystem: "io.stacksift", category: "Reporter")
 
+    }
+
+    private lazy var reporter: WellsReporter = {
         let reportingURL = Stacksift.defaultDirectory
-        self.reporter = WellsReporter(baseURL: reportingURL)
+
+        let backgroundIdentifier = useBackgroundUploads ? WellsUploader.defaultBackgroundIdentifier : nil
+
+        let reporter = WellsReporter(baseURL: reportingURL, backgroundIdentifier: backgroundIdentifier)
 
         reporter.locationProvider = IdentifierExtensionLocationProvider(baseURL: reportingURL, fileExtension: "log")
-    }
+
+        return reporter
+    }()
 
     private var reportDirectoryURL: URL {
         return reporter.baseURL
     }
 
-    public static func start(APIKey: String) {
-        shared.start(APIKey: APIKey)
+    /// Indicates if the SDK was configured to send uploads using a background session
+    ///
+    /// By default, the SDK will use an URLSession background configuration for uploading
+    /// reports. This is optimal from a reliablity and performance perspective. However,
+    /// it can be furstrating to wait for the OS to decide to send a report while testing.
+    public var usingBackgroundUploads: Bool {
+        return reporter.usingBackgroundUploads
     }
 
-    public func start(APIKey: String) {
-        self.APIKey = APIKey
+    public static func start(APIKey: String, useBackgroundUploads: Bool = true) {
+        shared.start(APIKey: APIKey, useBackgroundUploads: useBackgroundUploads)
+    }
 
+    public func start(APIKey: String, useBackgroundUploads: Bool = true) {
+        self.APIKey = APIKey
+        self.useBackgroundUploads = useBackgroundUploads
+
+        if useBackgroundUploads == false {
+            os_log("using non-background sessions for uploading reports", log: self.logger, type: .info)
+        }
+        
         let existingURLs = existingLogURLs()
 
         let id = UUID()

@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Impact",
+        "repositoryURL": "https://github.com/stacksift/Impact",
+        "state": {
+          "branch": null,
+          "revision": "21ab8369a6607c9b1174a174e03b745706bb29c8",
+          "version": "0.3.2"
+        }
+      },
+      {
+        "package": "Wells",
+        "repositoryURL": "https://github.com/stacksift/Wells",
+        "state": {
+          "branch": null,
+          "revision": "d7aad19f68703692624bcbcee40fd625cc9ff5e9",
+          "version": "0.1.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
