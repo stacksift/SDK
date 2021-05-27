@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C9A522D6265FF6240054C454"
-               BuildableName = "SDK.framework"
+               BuildableName = "Stacksift.framework"
                BlueprintName = "SDK"
                ReferencedContainer = "container:SDK.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C9A522D6265FF6240054C454"
-            BuildableName = "SDK.framework"
+            BuildableName = "Stacksift.framework"
             BlueprintName = "SDK"
             ReferencedContainer = "container:SDK.xcodeproj">
          </BuildableReference>
