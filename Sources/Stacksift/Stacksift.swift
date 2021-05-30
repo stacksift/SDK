@@ -139,6 +139,9 @@ public class Stacksift {
         guard let url = URL(string: "https://reports.stacksift.io/v1/reports") else {
             throw NSError(domain: "StacksiftError", code: 2)
         }
+        guard let bundleId = Bundle.main.bundleIdentifier else {
+            throw NSError(domain: "StacksiftError", code: 3)
+        }
 
         let reportID = identifier.reportID
         let mimeType = identifier.mimeType
@@ -151,7 +154,9 @@ public class Stacksift {
         request.addValue(platform, forHTTPHeaderField: "stacksift-platform")
         request.addValue(mimeType, forHTTPHeaderField: "Content-Type")
         request.addValue(APIKey, forHTTPHeaderField: "stacksift-api-key")
+        request.addValue(bundleId, forHTTPHeaderField: "stacksift-app-identifier")
 
+        
         return request
     }
 
