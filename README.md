@@ -78,4 +78,4 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 [impact]: https://github.com/stacksift/Impact
 [wells]: https://github.com/stacksift/Wells
 [metrickit]: https://developer.apple.com/documentation/metrickit
-[mxcrashdiagnostic]: https://developer.apple.com/documentation/metrickit/mxcrashdiagnostic]
+[mxcrashdiagnostic]: https://developer.apple.com/documentation/metrickit/mxcrashdiagnostic
