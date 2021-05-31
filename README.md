@@ -42,7 +42,7 @@ Stacksift can capture your crash information in two different ways: in-process m
 
 In-process monitoring is the traditional approach taken by third-party crash reporting systems. In-process monitoring can capture many, but not all types of crashes. However, it requires a complex system that does not interoperate well. You should install only **one** in-process reporter.
 
-MetricKit [crash diagnostics][mxcrashdiagnostic] is a new facility introduced with iOS 14. MetricKit is far less invasive, much simplier, and can include more context than an in-process system. And, it was built to be used by multiple consumers within the same app. Unfortunately, MetricKit also comes with some severe limitations, in addition to the platform/OS availability.
+MetricKit [crash diagnostics][mxcrashdiagnostic] is a new facility introduced with iOS 14. MetricKit is far less invasive, much simpler, and can include more context than an in-process system. And, it was built to be used by multiple consumers within the same app. Unfortunately, MetricKit also comes with some severe limitations, in addition to the platform/OS availability.
 
 MetricKit results are only available ~ 24 hours after they have been captured, even while testing. It is also undocumented how many crashes MetricKit will buffer, should your app not be relaunched within that 24 hour window. MetricKit crashes are only available on devices that have opted into sharing diagnostic data with developers. It is widely believed the opt-in rate is below 25%. Finally, MetricKit reports omit a number of relevant details, such as a precise time and information about uncaught runtime exceptions.
 
