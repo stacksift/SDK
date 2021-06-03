@@ -20,6 +20,12 @@ Carthage:
 github "stacksift/SDK"
 ```
 
+CocoaPods:
+
+```
+pod 'Stacksift'
+```
+
 ## Getting Started
 
 All you need to do is `import Stacksift`, and call then call `start` early in your app's lifecycle.
