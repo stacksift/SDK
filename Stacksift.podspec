@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'Stacksift'
-  s.version      = '0.2.2'
+  s.version      = '0.2.3'
   s.summary      = 'Capture and submit crashes to Stacksift'
 
   s.homepage     = 'https://github.com/stacksift/SDK'
