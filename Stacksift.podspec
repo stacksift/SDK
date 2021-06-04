@@ -20,5 +20,5 @@ Pod::Spec.new do |s|
   s.swift_version = '5.0'
   
   s.dependency 'Wells', '~> 0.1.3'
-  s.dependency 'Impact', '~> 0.3.5'
+  s.dependency 'Impact', '~> 0.3.6'
 end

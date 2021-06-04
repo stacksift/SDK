@@ -13,8 +13,8 @@ let package = Package(
             targets: ["Stacksift"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/stacksift/Impact", from: "0.3.3"),
-        .package(url: "https://github.com/stacksift/Wells", from: "0.1.2"),
+        .package(url: "https://github.com/stacksift/Impact", from: "0.3.6"),
+        .package(url: "https://github.com/stacksift/Wells", from: "0.1.3"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.

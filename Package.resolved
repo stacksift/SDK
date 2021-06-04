@@ -6,17 +6,17 @@
         "repositoryURL": "https://github.com/stacksift/Impact",
         "state": {
           "branch": null,
-          "revision": "21ab8369a6607c9b1174a174e03b745706bb29c8",
-          "version": "0.3.2"
+          "revision": "eaa432a98b91380e17c7fe04c1504f66d004b087",
+          "version": "0.3.6"
         }
       },
       {
         "package": "Wells",
         "repositoryURL": "https://github.com/stacksift/Wells",
         "state": {
-          "branch": "main",
-          "revision": "24cf9e53b3e92dbfab4e3b45fe5b74506dcff27d",
-          "version": null
+          "branch": null,
+          "revision": "ed44eb960fde245c184be30bc3fa0b3027a7a97c",
+          "version": "0.1.3"
         }
       }
     ]
