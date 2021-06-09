@@ -8,6 +8,7 @@ public class Stacksift {
         case inProcessOnly
         case metricKitOnly
         case metricKitWithInProcessFallback
+        case metricKitAndInProcess
     }
 
     public static var shared = Stacksift()
@@ -227,7 +228,7 @@ public class Stacksift {
 extension Stacksift {
     private var impactEnabled: Bool {
         switch monitorType {
-        case .inProcessOnly:
+        case .inProcessOnly, .metricKitAndInProcess:
             return true
         case .metricKitWithInProcessFallback:
             return metricKitAvailable == false
@@ -241,7 +242,12 @@ extension Stacksift {
     }
     
     private var metricKitEnabled: Bool {
-        return metricKitAvailable && impactEnabled == false
+        switch monitorType {
+        case .inProcessOnly:
+            return false
+        case .metricKitWithInProcessFallback, .metricKitOnly, .metricKitAndInProcess:
+            return metricKitAvailable
+        }
     }
 }
 
