@@ -55,13 +55,10 @@ extension MetricKitSubscriber: MXMetricManagerSubscriber {
     func didReceive(_ payloads: [MXDiagnosticPayload]) {
         os_log("received payloads", log: self.logger, type: .info)
 
-        let realPayloads = payloads.filter { payload in
-            if payload.isSimulated {
-                os_log("filtering simulated payload", log: self.logger, type: .info)
-                return false
-            }
+        let realPayloads = payloads.filter { $0.isSimulated == false }
 
-            return true
+        if realPayloads.count < payloads.count {
+            os_log("filtering simulated payloads", log: self.logger, type: .info)
         }
 
         let reps = realPayloads.map { $0.jsonRepresentation() }
