@@ -9,29 +9,12 @@
 /* Begin PBXBuildFile section */
 		C9A522E6265FF7660054C454 /* Stacksift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A522E4265FF75E0054C454 /* Stacksift.swift */; };
 		C9A522E7265FF7680054C454 /* FileManager+Directories.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A522E5265FF75E0054C454 /* FileManager+Directories.swift */; };
-		C9A522EC266023310054C454 /* Impact.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EA266023310054C454 /* Impact.xcframework */; };
-		C9A522ED266023310054C454 /* Impact.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EA266023310054C454 /* Impact.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C9A522EE266023310054C454 /* Wells.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EB266023310054C454 /* Wells.xcframework */; };
-		C9A522EF266023310054C454 /* Wells.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EB266023310054C454 /* Wells.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9A522F2266031FF0054C454 /* MetricKitSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A522F1266031FF0054C454 /* MetricKitSubscriber.swift */; };
 		C9A522F42660354D0054C454 /* UUID+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A522F32660354D0054C454 /* UUID+Utilities.swift */; };
 		C9A522F62660FB3E0054C454 /* UploadIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A522F52660FB3E0054C454 /* UploadIdentifier.swift */; };
+		C9A54177267A816100ABAB5F /* Impact.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EA266023310054C454 /* Impact.xcframework */; };
+		C9A5417A267A816200ABAB5F /* Wells.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EB266023310054C454 /* Wells.xcframework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		C9A522F0266023310054C454 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				C9A522ED266023310054C454 /* Impact.xcframework in Embed Frameworks */,
-				C9A522EF266023310054C454 /* Wells.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C9A522D7265FF6240054C454 /* Stacksift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Stacksift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,8 +33,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9A522EC266023310054C454 /* Impact.xcframework in Frameworks */,
-				C9A522EE266023310054C454 /* Wells.xcframework in Frameworks */,
+				C9A54177267A816100ABAB5F /* Impact.xcframework in Frameworks */,
+				C9A5417A267A816200ABAB5F /* Wells.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,7 +102,6 @@
 				C9A522D3265FF6240054C454 /* Sources */,
 				C9A522D4265FF6240054C454 /* Frameworks */,
 				C9A522D5265FF6240054C454 /* Resources */,
-				C9A522F0266023310054C454 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
