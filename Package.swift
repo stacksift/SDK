@@ -13,7 +13,7 @@ let package = Package(
             targets: ["Stacksift"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/stacksift/Impact", from: "0.3.6"),
+        .package(url: "https://github.com/stacksift/Impact", from: "0.3.7"),
         .package(url: "https://github.com/stacksift/Wells", from: "0.1.3"),
     ],
     targets: [
