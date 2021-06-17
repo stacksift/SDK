@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'Stacksift'
-  s.version      = '0.3.1'
+  s.version      = '0.3.2'
   s.summary      = 'Capture and submit crashes to Stacksift'
 
   s.homepage     = 'https://github.com/stacksift/SDK'
@@ -19,6 +19,6 @@ Pod::Spec.new do |s|
   s.cocoapods_version = '>= 1.4.0'
   s.swift_version = '5.0'
   
-  s.dependency 'Wells', '~> 0.1.3'
-  s.dependency 'Impact', '~> 0.3.7'
+  s.dependency 'Wells', '~> 0.1.4'
+  s.dependency 'Impact', '~> 0.3.8'
 end
