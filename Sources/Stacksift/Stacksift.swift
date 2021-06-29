@@ -3,15 +3,15 @@ import Impact
 import Wells
 import os.log
 
-public class Stacksift {
-    public enum Monitor {
+public class Stacksift: NSObject {
+    @objc public enum Monitor: Int {
         case inProcessOnly
         case metricKitOnly
         case metricKitWithInProcessFallback
         case metricKitAndInProcess
     }
 
-    public static var shared = Stacksift()
+    @objc public static var shared = Stacksift()
 
     private var APIKey: String?
     private var endpoint: URL?
@@ -20,7 +20,7 @@ public class Stacksift {
 
     private let logger: OSLog
 
-    init() {
+    override init() {
         self.logger = OSLog(subsystem: "io.stacksift", category: "Reporter")
     }
 
@@ -49,17 +49,17 @@ public class Stacksift {
     /// By default, the SDK will use an URLSession background configuration for uploading
     /// reports. This is optimal from a reliablity and performance perspective. However,
     /// it can be furstrating to wait for the OS to decide to send a report while testing.
-    public var usingBackgroundUploads: Bool {
+    @objc public var usingBackgroundUploads: Bool {
         return reporter.usingBackgroundUploads
     }
 
-    public static func start(APIKey: String, useBackgroundUploads: Bool = true, monitor: Monitor = .inProcessOnly) {
+    @objc public static func start(APIKey: String, useBackgroundUploads: Bool = true, monitor: Monitor = .inProcessOnly) {
         shared.start(APIKey: APIKey,
                      useBackgroundUploads: useBackgroundUploads,
                      monitor: monitor)
     }
 
-    public func start(APIKey: String, useBackgroundUploads: Bool = true, monitor: Monitor = .inProcessOnly) {
+    @objc public func start(APIKey: String, useBackgroundUploads: Bool = true, monitor: Monitor = .inProcessOnly) {
         self.APIKey = APIKey
         self.useBackgroundUploads = useBackgroundUploads
         self.monitorType = monitor
@@ -252,11 +252,11 @@ extension Stacksift {
 }
 
 extension Stacksift {
-    public static func testCrash() -> Never {
+    @objc public static func testCrash() -> Never {
         preconditionFailure()
     }
 
-    public static func testException() {
+    @objc public static func testException() {
         let name = NSExceptionName(rawValue: "StacksiftTestException")
         let exc = NSException(name: name,
                               reason: "This is a test exception from the Stacksift SDK",
@@ -267,7 +267,7 @@ extension Stacksift {
 }
 
 extension Stacksift {
-    public static var defaultDirectory: URL {
+    @objc public static var defaultDirectory: URL {
         guard let url = FileManager.cachesURL?.appendingPathComponent("Impact") else {
             return WellsReporter.defaultDirectory
         }
