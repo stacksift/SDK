@@ -18,6 +18,18 @@ public class Stacksift: NSObject {
     private var useBackgroundUploads: Bool = true
     private var monitorType = Monitor.inProcessOnly
 
+    /// Identifier used for counting unique affected devices
+    ///
+    /// This value is used for counting the number of unique devices affected by an issue.
+    /// The supplied value is not indexed, and not necessarily recoverable from raw
+    /// report data. You should consider it useful exclusively for enabling the unique counting
+    /// features.
+    ///
+    /// - Important
+    /// This value is not persisted. It is the responsibility of the client to
+    /// store and set it on every launch.
+    @objc public var installIdentifier: String?
+
     private let logger: OSLog
 
     override init() {
@@ -79,6 +91,7 @@ public class Stacksift: NSObject {
             let logURL = reportDirectoryURL.appendingPathComponent(idString, isDirectory: false).appendingPathExtension("log")
 
             ImpactMonitor.shared.organizationIdentifier = APIKey
+            ImpactMonitor.shared.installIdentifier = installIdentifier
             ImpactMonitor.shared.start(with: logURL, identifier: id)
         }
 
@@ -157,7 +170,10 @@ public class Stacksift: NSObject {
         request.addValue(APIKey, forHTTPHeaderField: "stacksift-api-key")
         request.addValue(bundleId, forHTTPHeaderField: "stacksift-app-identifier")
 
-        
+        if let installId = installIdentifier {
+            request.addValue(installId, forHTTPHeaderField: "stacksift-install-identifier")
+        }
+
         return request
     }
 
