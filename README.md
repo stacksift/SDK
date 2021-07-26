@@ -40,7 +40,7 @@ Stacksift.start(APIKey: "my key")
 
 ## Background Uploads
 
-By default, Stacksift using `URLSession` background uploads for both reliability and performance. However, sometimes these can take **hours** for the OS to actually execute. This can be a pain if you are just testing things out. To make that easier, you can disable background uploads with another parameter to the `start` method.
+By default, Stacksift uses `URLSession` background uploads for both reliability and performance. However, sometimes these can take **hours** for the OS to actually execute. This can be a pain if you are just testing things out. To make that easier, you can disable background uploads with another parameter to the `start` method.
 
 ## MetricKit vs In-Process
 
