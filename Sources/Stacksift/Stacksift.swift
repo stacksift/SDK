@@ -65,13 +65,48 @@ public class Stacksift: NSObject {
         return reporter.usingBackgroundUploads
     }
 
-    @objc public static func start(APIKey: String, useBackgroundUploads: Bool = true, monitor: Monitor = .inProcessOnly) {
+    /// Setup the Stacksift system and begin monitoring for crashes
+    ///
+    /// This method initializes the SDK and begins monitoring for crashes, as well as
+    /// relaying previously-found crashes to the Stacksift service.
+    ///
+
+
+    /// Setup the Stacksift system
+    ///
+    /// This method initializes the SDK and begins monitoring for crashes, as well as
+    /// relaying previously-found crashes to the Stacksift service.
+    ///
+    /// - Important
+    /// In-process monitoring systems are **not** interoperable. Be very careful with
+    /// the *monitor* parameter if you are using more than one service.
+    ///
+    /// - Parameters:
+    ///   - APIKey: The Stacksift-issued key used to identify your organization
+    ///   - useBackgroundUploads: Controls the use of URLSession background uploads. This
+    ///   can be problematic for testing. Defaults to true.
+    ///   - monitor: The type of crash monitoring for the process. Defaults to metricKitAndInProcess.
+    @objc public static func start(APIKey: String, useBackgroundUploads: Bool = true, monitor: Monitor = .metricKitAndInProcess) {
         shared.start(APIKey: APIKey,
                      useBackgroundUploads: useBackgroundUploads,
                      monitor: monitor)
     }
 
-    @objc public func start(APIKey: String, useBackgroundUploads: Bool = true, monitor: Monitor = .inProcessOnly) {
+    /// Setup the Stacksift system
+    ///
+    /// This method initializes the SDK and begins monitoring for crashes, as well as
+    /// relaying previously-found crashes to the Stacksift service.
+    ///
+    /// - Important
+    /// In-process monitoring systems are **not** interoperable. Be very careful with
+    /// the *monitor* parameter if you are using more than one service.
+    ///
+    /// - Parameters:
+    ///   - APIKey: The Stacksift-issued key used to identify your organization
+    ///   - useBackgroundUploads: Controls the use of URLSession background uploads. This
+    ///   can be problematic for testing. Defaults to true.
+    ///   - monitor: The type of crash monitoring for the process. Defaults to metricKitAndInProcess.
+    @objc public func start(APIKey: String, useBackgroundUploads: Bool = true, monitor: Monitor = .metricKitAndInProcess) {
         self.APIKey = APIKey
         self.useBackgroundUploads = useBackgroundUploads
         self.monitorType = monitor
