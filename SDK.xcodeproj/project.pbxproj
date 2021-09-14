@@ -14,7 +14,21 @@
 		C9A522F62660FB3E0054C454 /* UploadIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A522F52660FB3E0054C454 /* UploadIdentifier.swift */; };
 		C9A54177267A816100ABAB5F /* Impact.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EA266023310054C454 /* Impact.xcframework */; };
 		C9A5417A267A816200ABAB5F /* Wells.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522EB266023310054C454 /* Wells.xcframework */; };
+		C9DAB1BC26F105FE0012E9E2 /* StacksiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DAB1BB26F105FE0012E9E2 /* StacksiftTests.swift */; };
+		C9DAB1BD26F105FE0012E9E2 /* Stacksift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9A522D7265FF6240054C454 /* Stacksift.framework */; platformFilter = ios; };
+		C9DAB1C426F106A00012E9E2 /* libc++abi.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C9DAB1C326F106A00012E9E2 /* libc++abi.tbd */; };
+		C9DAB1C726F1071A0012E9E2 /* ObjCStacksiftTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9DAB1C626F1071A0012E9E2 /* ObjCStacksiftTests.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C9DAB1BE26F105FE0012E9E2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9A522CE265FF6240054C454 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C9A522D6265FF6240054C454;
+			remoteInfo = SDK;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		C9A522D7265FF6240054C454 /* Stacksift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Stacksift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -26,6 +40,11 @@
 		C9A522F1266031FF0054C454 /* MetricKitSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricKitSubscriber.swift; sourceTree = "<group>"; };
 		C9A522F32660354D0054C454 /* UUID+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UUID+Utilities.swift"; sourceTree = "<group>"; };
 		C9A522F52660FB3E0054C454 /* UploadIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadIdentifier.swift; sourceTree = "<group>"; };
+		C9DAB1B926F105FE0012E9E2 /* StacksiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StacksiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9DAB1BB26F105FE0012E9E2 /* StacksiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StacksiftTests.swift; sourceTree = "<group>"; };
+		C9DAB1C326F106A00012E9E2 /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = "usr/lib/libc++abi.tbd"; sourceTree = SDKROOT; };
+		C9DAB1C526F1071A0012E9E2 /* StacksiftTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StacksiftTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		C9DAB1C626F1071A0012E9E2 /* ObjCStacksiftTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjCStacksiftTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +57,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C9DAB1B626F105FE0012E9E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9DAB1C426F106A00012E9E2 /* libc++abi.tbd in Frameworks */,
+				C9DAB1BD26F105FE0012E9E2 /* Stacksift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -46,6 +74,7 @@
 			children = (
 				C9A522E3265FF75E0054C454 /* Stacksift */,
 				C9A522E2265FF67C0054C454 /* SDK.xcconfig */,
+				C9DAB1BA26F105FE0012E9E2 /* StacksiftTests */,
 				C9A522D8265FF6240054C454 /* Products */,
 				C9A522E9266023310054C454 /* Frameworks */,
 			);
@@ -55,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				C9A522D7265FF6240054C454 /* Stacksift.framework */,
+				C9DAB1B926F105FE0012E9E2 /* StacksiftTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,10 +105,21 @@
 		C9A522E9266023310054C454 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C9DAB1C326F106A00012E9E2 /* libc++abi.tbd */,
 				C9A522EA266023310054C454 /* Impact.xcframework */,
 				C9A522EB266023310054C454 /* Wells.xcframework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C9DAB1BA26F105FE0012E9E2 /* StacksiftTests */ = {
+			isa = PBXGroup;
+			children = (
+				C9DAB1BB26F105FE0012E9E2 /* StacksiftTests.swift */,
+				C9DAB1C626F1071A0012E9E2 /* ObjCStacksiftTests.m */,
+				C9DAB1C526F1071A0012E9E2 /* StacksiftTests-Bridging-Header.h */,
+			);
+			path = StacksiftTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,16 +153,39 @@
 			productReference = C9A522D7265FF6240054C454 /* Stacksift.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		C9DAB1B826F105FE0012E9E2 /* StacksiftTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C9DAB1C226F105FE0012E9E2 /* Build configuration list for PBXNativeTarget "StacksiftTests" */;
+			buildPhases = (
+				C9DAB1B526F105FE0012E9E2 /* Sources */,
+				C9DAB1B626F105FE0012E9E2 /* Frameworks */,
+				C9DAB1B726F105FE0012E9E2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C9DAB1BF26F105FE0012E9E2 /* PBXTargetDependency */,
+			);
+			name = StacksiftTests;
+			productName = StacksiftTests;
+			productReference = C9DAB1B926F105FE0012E9E2 /* StacksiftTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		C9A522CE265FF6240054C454 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					C9A522D6265FF6240054C454 = {
 						CreatedOnToolsVersion = 12.5;
+					};
+					C9DAB1B826F105FE0012E9E2 = {
+						CreatedOnToolsVersion = 13.0;
+						LastSwiftMigration = 1300;
 					};
 				};
 			};
@@ -139,12 +203,20 @@
 			projectRoot = "";
 			targets = (
 				C9A522D6265FF6240054C454 /* SDK */,
+				C9DAB1B826F105FE0012E9E2 /* StacksiftTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C9A522D5265FF6240054C454 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C9DAB1B726F105FE0012E9E2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -166,7 +238,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C9DAB1B526F105FE0012E9E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9DAB1C726F1071A0012E9E2 /* ObjCStacksiftTests.m in Sources */,
+				C9DAB1BC26F105FE0012E9E2 /* StacksiftTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C9DAB1BF26F105FE0012E9E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = C9A522D6265FF6240054C454 /* SDK */;
+			targetProxy = C9DAB1BE26F105FE0012E9E2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C9A522DD265FF6240054C454 /* Debug */ = {
@@ -330,6 +420,55 @@
 			};
 			name = Release;
 		};
+		C9DAB1C026F105FE0012E9E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.stacksift.StacksiftTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "StacksiftTests/StacksiftTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C9DAB1C126F105FE0012E9E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.stacksift.StacksiftTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "StacksiftTests/StacksiftTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -347,6 +486,15 @@
 			buildConfigurations = (
 				C9A522E0265FF6240054C454 /* Debug */,
 				C9A522E1265FF6240054C454 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C9DAB1C226F105FE0012E9E2 /* Build configuration list for PBXNativeTarget "StacksiftTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9DAB1C026F105FE0012E9E2 /* Debug */,
+				C9DAB1C126F105FE0012E9E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

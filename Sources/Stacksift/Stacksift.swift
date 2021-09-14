@@ -4,19 +4,76 @@ import Wells
 import os.log
 
 public class Stacksift: NSObject {
+
+    @objc(StacksiftConfiguration)
+    public class Configuration: NSObject {
+        @objc public var APIKey: String
+
+        /// URL value used for relaying reports
+        ///
+        /// Changing this value is useful for redirecting submissions away from
+        /// the default of "https://reports.stacksift.io/v1/reports". A malformed
+        /// url or otherwise unreachable URL will result in loss of reports.
+        ///
+        /// - Important: When used for proxying, all HTTP headers **must** be preserved.
+        @objc public var endpoint: String = "https://reports.stacksift.io/v1/reports"
+
+        @objc public var useBackgroundUploads: Bool = true
+
+        @objc public var monitor = Monitor.metricKitAndInProcess
+
+        /// Identifier used for counting unique affected devices
+        ///
+        /// This value is used for counting the number of unique devices affected by an issue.
+        /// The supplied value is not indexed, and not necessarily recoverable from raw
+        /// report data. You should consider it useful exclusively for enabling the unique counting
+        /// features.
+        ///
+        /// - Important: This value is not persisted. It is the responsibility of the client to
+        /// store and set it on every launch.
+        @objc public var installIdentifier: String?
+
+        @objc public var logger: OSLog = OSLog(subsystem: "io.stacksift", category: "Reporter")
+
+        @objc public init(APIKey: String) {
+            self.APIKey = APIKey
+        }
+    }
+
     @objc public enum Monitor: Int {
         case inProcessOnly
         case metricKitOnly
         case metricKitWithInProcessFallback
         case metricKitAndInProcess
+
+        public var impactEnabled: Bool {
+            switch self {
+            case .inProcessOnly, .metricKitAndInProcess:
+                return true
+            case .metricKitWithInProcessFallback:
+                return metricKitAvailable == false
+            case .metricKitOnly:
+                return false
+            }
+        }
+
+        private var metricKitAvailable: Bool {
+            return MetricKitSubscriber.metricKitAvailable
+        }
+
+        public var metricKitEnabled: Bool {
+            switch self {
+            case .inProcessOnly:
+                return false
+            case .metricKitWithInProcessFallback, .metricKitOnly, .metricKitAndInProcess:
+                return metricKitAvailable
+            }
+        }
     }
 
-    @objc public static var shared = Stacksift()
+    @objc public static let shared = Stacksift()
 
-    private var APIKey: String?
-    private var endpoint: URL?
-    private var useBackgroundUploads: Bool = true
-    private var monitorType = Monitor.inProcessOnly
+    public private(set) var configuration: Configuration
 
     /// Identifier used for counting unique affected devices
     ///
@@ -28,12 +85,25 @@ public class Stacksift: NSObject {
     /// - Important
     /// This value is not persisted. It is the responsibility of the client to
     /// store and set it on every launch.
-    @objc public var installIdentifier: String?
+    @objc public var installIdentifier: String? {
+        get { configuration.installIdentifier }
+        set { configuration.installIdentifier = newValue }
+    }
 
-    private let logger: OSLog
+    private var logger: OSLog {
+        get { configuration.logger }
+    }
+
+    private var useBackgroundUploads: Bool {
+        get { configuration.useBackgroundUploads }
+    }
+
+    public var APIKey: String {
+        get { configuration.APIKey }
+    }
 
     override init() {
-        self.logger = OSLog(subsystem: "io.stacksift", category: "Reporter")
+        self.configuration = Configuration(APIKey: "")
     }
 
     private lazy var reporter: WellsReporter = {
@@ -65,12 +135,44 @@ public class Stacksift: NSObject {
         return reporter.usingBackgroundUploads
     }
 
-    /// Setup the Stacksift system and begin monitoring for crashes
-    ///
-    /// This method initializes the SDK and begins monitoring for crashes, as well as
-    /// relaying previously-found crashes to the Stacksift service.
-    ///
+    @objc public static func start(configuration: Configuration) {
+        shared.start(configuration: configuration)
+    }
 
+    @objc public func start(configuration: Configuration) {
+        self.configuration = configuration
+
+        if useBackgroundUploads == false {
+            os_log("using non-background sessions for uploading reports", log: logger, type: .info)
+        }
+
+        let existingURLs = existingLogURLs()
+        let monitor = configuration.monitor
+
+        if monitor.impactEnabled {
+            os_log("using in-process monitoring", log: logger, type: .info)
+
+            let id = UUID()
+            let idString = id.lowerAlphaOnly
+
+            let logURL = reportDirectoryURL.appendingPathComponent(idString, isDirectory: false).appendingPathExtension("log")
+
+            ImpactMonitor.shared.organizationIdentifier = APIKey
+            ImpactMonitor.shared.installIdentifier = installIdentifier
+            ImpactMonitor.shared.start(with: logURL, identifier: id)
+        }
+
+        if monitor.metricKitEnabled {
+            os_log("using MetricKit monitoring", log: logger, type: .info)
+
+            metricKitSubscriber.onReceive = { [unowned self] (reps) in
+                self.handleMetricKitPayloadData(reps)
+            }
+        }
+
+        submitExistingLogs(with: existingURLs)
+
+    }
 
     /// Setup the Stacksift system
     ///
@@ -107,38 +209,12 @@ public class Stacksift: NSObject {
     ///   can be problematic for testing. Defaults to true.
     ///   - monitor: The type of crash monitoring for the process. Defaults to metricKitAndInProcess.
     @objc public func start(APIKey: String, useBackgroundUploads: Bool = true, monitor: Monitor = .metricKitAndInProcess) {
-        self.APIKey = APIKey
-        self.useBackgroundUploads = useBackgroundUploads
-        self.monitorType = monitor
+        let config = Configuration(APIKey: APIKey)
 
-        if useBackgroundUploads == false {
-            os_log("using non-background sessions for uploading reports", log: self.logger, type: .info)
-        }
-        
-        let existingURLs = existingLogURLs()
+        config.useBackgroundUploads = useBackgroundUploads
+        config.monitor = monitor
 
-        if impactEnabled {
-            os_log("using in-process monitoring", log: self.logger, type: .info)
-
-            let id = UUID()
-            let idString = id.lowerAlphaOnly
-
-            let logURL = reportDirectoryURL.appendingPathComponent(idString, isDirectory: false).appendingPathExtension("log")
-
-            ImpactMonitor.shared.organizationIdentifier = APIKey
-            ImpactMonitor.shared.installIdentifier = installIdentifier
-            ImpactMonitor.shared.start(with: logURL, identifier: id)
-        }
-
-        if metricKitEnabled {
-            os_log("using MetricKit monitoring", log: self.logger, type: .info)
-
-            metricKitSubscriber.onReceive = { [unowned self] (reps) in
-                self.handleMetricKitPayloadData(reps)
-            }
-        }
-
-        submitExistingLogs(with: existingURLs)
+        start(configuration: config)
     }
 
     private func handleMetricKitPayloadData(_ reps: [Data]) {
@@ -182,10 +258,13 @@ public class Stacksift: NSObject {
 
     private func makeURLRequest(identifier: UploadIdentifier) throws -> URLRequest {
         let platform = ImpactMonitor.platform as String
-        guard let APIKey = APIKey else {
+        let APIKey = configuration.APIKey
+
+        guard APIKey.isEmpty == false else {
             throw NSError(domain: "StacksiftError", code: 1)
         }
-        guard let url = URL(string: "https://reports.stacksift.io/v1/reports") else {
+
+        guard let url = URL(string: configuration.endpoint) else {
             throw NSError(domain: "StacksiftError", code: 2)
         }
         guard let bundleId = Bundle.main.bundleIdentifier else {
@@ -272,32 +351,6 @@ public class Stacksift: NSObject {
             try FileManager.default.removeItem(at: url)
         } catch {
             os_log("failed to remove log at %{public}@ %{public}@", log: self.logger, type: .error, url.path, error.localizedDescription)
-        }
-    }
-}
-
-extension Stacksift {
-    private var impactEnabled: Bool {
-        switch monitorType {
-        case .inProcessOnly, .metricKitAndInProcess:
-            return true
-        case .metricKitWithInProcessFallback:
-            return metricKitAvailable == false
-        case .metricKitOnly:
-            return false
-        }
-    }
-
-    private var metricKitAvailable: Bool {
-        return MetricKitSubscriber.metricKitAvailable
-    }
-    
-    private var metricKitEnabled: Bool {
-        switch monitorType {
-        case .inProcessOnly:
-            return false
-        case .metricKitWithInProcessFallback, .metricKitOnly, .metricKitAndInProcess:
-            return metricKitAvailable
         }
     }
 }
