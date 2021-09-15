@@ -26,24 +26,26 @@ class MetricKitSubscriber: NSObject {
             return
         }
 
-        #if os(iOS) || (os(macOS) && swift(>=5.5))
-        if #available(iOS 14.0, macOS 12.0, *) {
+        #if os(iOS)
+        if #available(iOS 14.0, *) {
             MXMetricManager.shared.add(self)
         }
         #endif
     }
 
     static var metricKitAvailable: Bool {
-        if #available(iOS 14.0, macOS 12.0, *) {
+        #if os(iOS)
+        if #available(iOS 14.0, *) {
             return true
-        } else {
-            return false
         }
+        #endif
+
+        return false
     }
 }
 
-#if os(iOS) || (os(macOS) && swift(>=5.5))
-@available(iOS 13.0, macOS 12.0, *)
+#if os(iOS)
+@available(iOS 13.0, *)
 extension MetricKitSubscriber: MXMetricManagerSubscriber {
     #if os(iOS)
     @available(iOS 13.0, *)
@@ -51,7 +53,7 @@ extension MetricKitSubscriber: MXMetricManagerSubscriber {
     }
     #endif
 
-    @available(iOS 14.0, macOS 12.0, *)
+    @available(iOS 14.0, *)
     func didReceive(_ payloads: [MXDiagnosticPayload]) {
         os_log("received payloads", log: self.logger, type: .info)
 
