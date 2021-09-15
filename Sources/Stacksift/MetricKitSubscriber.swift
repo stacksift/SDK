@@ -11,6 +11,10 @@ import os.log
 import MetricKit
 #endif
 
+// (os(macOS) && canImport(ShazamKit)) is used as a proxy for detecting the macOS 12.0 SDK. And, that check
+// is only required because the needed MetricKit APIs aren't available in earlier SDKs. Once the 12.0 SDK
+// is available in an officially-released Xcode version, I think this can be safely dropped.
+
 class MetricKitSubscriber: NSObject {
     private let logger: OSLog
     
@@ -26,16 +30,16 @@ class MetricKitSubscriber: NSObject {
             return
         }
 
-        #if os(iOS)
-        if #available(iOS 14.0, *) {
+        #if os(iOS) || (os(macOS) && canImport(ShazamKit))
+        if #available(iOS 14.0, macOS 12.0, *) {
             MXMetricManager.shared.add(self)
         }
         #endif
     }
 
     static var metricKitAvailable: Bool {
-        #if os(iOS)
-        if #available(iOS 14.0, *) {
+        #if os(iOS) || (os(macOS) && canImport(ShazamKit))
+        if #available(iOS 14.0, macOS 12.0, *) {
             return true
         }
         #endif
@@ -44,7 +48,7 @@ class MetricKitSubscriber: NSObject {
     }
 }
 
-#if os(iOS)
+#if os(iOS) || (os(macOS) && canImport(ShazamKit))
 @available(iOS 13.0, *)
 extension MetricKitSubscriber: MXMetricManagerSubscriber {
     #if os(iOS)
@@ -53,7 +57,7 @@ extension MetricKitSubscriber: MXMetricManagerSubscriber {
     }
     #endif
 
-    @available(iOS 14.0, *)
+    @available(iOS 14.0, macOS 12.0, *)
     func didReceive(_ payloads: [MXDiagnosticPayload]) {
         os_log("received payloads", log: self.logger, type: .info)
 
